@@ -4,11 +4,47 @@ This documentation covers **Props, Styling, Events, State, Lifecycle, and Hooks*
 
 ---
 
+## 0. Setup & Installation
+
+### Install React (using Vite)
+
+```bash
+# Create React project
+npm create vite@latest my-app
+cd my-app
+npm install
+npm run dev
+```
+
+### Install Tailwind CSS in React
+
+```bash
+# Step 1: Install Tailwind
+npm install -D tailwindcss postcss autoprefixer
+npx tailwindcss init -p
+
+# Step 2: Add paths in tailwind.config.js
+module.exports = {
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  theme: { extend: {} },
+  plugins: [],
+}
+
+# Step 3: Add Tailwind directives to src/index.css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+➡️ Now Tailwind is ready to use in your project.
+
+---
+
 ## 1. Props in React
 
 **Definition:** Props (short for *properties*) are used to pass data from a parent component to a child component.
 
-### Example:
+### Basic Example:
 
 ```jsx
 // Parent Component
@@ -23,6 +59,33 @@ function Child(props) {
 ```
 
 ➡️ Output: **Hello, React Student!**
+
+### Complete Example (Props with multiple children):
+
+```jsx
+function Student(props) {
+  return (
+    <div>
+      <h3>Name: {props.name}</h3>
+      <p>Age: {props.age}</p>
+      <p>Course: {props.course}</p>
+    </div>
+  );
+}
+
+function StudentsList() {
+  return (
+    <div>
+      <h2>Students Information</h2>
+      <Student name="Alice" age={20} course="React" />
+      <Student name="Bob" age={22} course="Node.js" />
+      <Student name="Charlie" age={19} course="JavaScript" />
+    </div>
+  );
+}
+```
+
+➡️ This example shows **how to pass multiple props** and render different child components with data.
 
 ---
 
@@ -84,13 +147,15 @@ function TailwindExample() {
 }
 ```
 
+➡️ Tailwind is already set up from installation steps.
+
 ---
 
 ## 3. Events in React
 
 Events are handled using camelCase (e.g., `onClick`).
 
-### Example:
+### Basic Example:
 
 ```jsx
 function EventExample() {
@@ -101,13 +166,35 @@ function EventExample() {
 }
 ```
 
+### Complete Example (Multiple Events):
+
+```jsx
+function FormEvents() {
+  function handleChange(e) {
+    console.log("Input value:", e.target.value);
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    alert("Form Submitted!");
+  }
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <input type="text" onChange={handleChange} />
+      <button type="submit">Submit</button>
+    </form>
+  );
+}
+```
+
 ---
 
 ## 4. State in React
 
 State is data that changes over time inside a component.
 
-### Example using `useState`:
+### Basic Example using `useState`:
 
 ```jsx
 import { useState } from "react";
@@ -124,12 +211,31 @@ function Counter() {
 }
 ```
 
+### Complete Example (Multiple States):
+
+```jsx
+function Profile() {
+  const [name, setName] = useState("John");
+  const [age, setAge] = useState(25);
+
+  return (
+    <div>
+      <h2>{name} is {age} years old</h2>
+      <button onClick={() => setAge(age + 1)}>Increase Age</button>
+      <button onClick={() => setName("Alice")}>Change Name</button>
+    </div>
+  );
+}
+```
+
 ---
 
 ## 5. Stateless vs Stateful Components
 
 * **Stateless:** Only uses props, no state.
 * **Stateful:** Manages its own state.
+
+### Example:
 
 ```jsx
 function Stateless(props) {
@@ -139,6 +245,24 @@ function Stateless(props) {
 function Stateful() {
   const [msg] = useState("I have state");
   return <h2>{msg}</h2>;
+}
+```
+
+### Complete Example (Stateless + Stateful Together):
+
+```jsx
+function Message({ text }) {
+  return <p>{text}</p>; // Stateless
+}
+
+function MessageContainer() {
+  const [message, setMessage] = useState("Hello World");
+  return (
+    <div>
+      <Message text={message} />
+      <button onClick={() => setMessage("Updated Message")}>Change</button>
+    </div>
+  );
 }
 ```
 
@@ -159,7 +283,7 @@ useEffect(() => {   // Mounting + Updating
 }, []);
 ```
 
-### Example:
+### Complete Example:
 
 ```jsx
 import { useState, useEffect } from "react";
@@ -189,15 +313,11 @@ Hooks let us use state and lifecycle in functional components.
 
 ### (a) useState
 
-Manages state.
-
 ```jsx
 const [value, setValue] = useState("Hello");
 ```
 
 ### (b) useEffect
-
-Runs side effects.
 
 ```jsx
 useEffect(() => {
@@ -206,8 +326,6 @@ useEffect(() => {
 ```
 
 ### (c) useContext
-
-Shares data across components.
 
 ```jsx
 const ThemeContext = React.createContext();
@@ -227,8 +345,6 @@ function Child() {
 ```
 
 ### (d) useRef
-
-Accesses DOM or keeps mutable values.
 
 ```jsx
 import { useRef } from "react";
@@ -250,8 +366,6 @@ function RefExample() {
 ```
 
 ### (e) useReducer
-
-Manages complex state logic.
 
 ```jsx
 function reducer(state, action) {
@@ -275,8 +389,6 @@ function ReducerExample() {
 
 ### (f) useCallback
 
-Memoizes functions.
-
 ```jsx
 const handleClick = React.useCallback(() => {
   console.log("Clicked");
@@ -284,8 +396,6 @@ const handleClick = React.useCallback(() => {
 ```
 
 ### (g) useMemo
-
-Memoizes values.
 
 ```jsx
 const result = React.useMemo(() => expensiveCalculation(num), [num]);
@@ -351,12 +461,13 @@ function TodoApp() {
 
 # ✅ Summary
 
-* **Props**: Passing data between components.
-* **Styling**: Inline, CSS, Modules, Tailwind.
-* **Events**: Handled via camelCase.
-* **State**: Managed using `useState`.
-* **Lifecycle**: Controlled via `useEffect`.
-* **Hooks**: Powerful tools (`useState`, `useEffect`, `useContext`, etc.).
-* **Mini App**: Demonstrated practical usage.
+* **Props**: Passing data between components (basic + complete example).
+* **Styling**: Inline, CSS, Modules, Tailwind (with installation).
+* **Events**: Basic + multiple event example.
+* **State**: Single + multiple state example.
+* **Stateless vs Stateful**: Compared with examples.
+* **Lifecycle**: Explained with diagram and example.
+* **Hooks**: All major hooks explained with code.
+* **Mini App**: Practical Todo List implementation.
 
 This documentation provides both **theory + examples** for teaching Unit III React effectively.
