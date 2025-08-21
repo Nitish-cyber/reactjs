@@ -43,6 +43,16 @@ module.exports = {
 ## 1. Props in React
 
 **Definition:** Props (short for *properties*) are used to pass data from a parent component to a child component.
+🔹 Syntax of Using Props
+
+**2.Pass props from Parent → Child
+**
+<ChildComponent name="React Student" age={21} />
+**2.Receive props inside Child component
+**
+function ChildComponent(props) {
+  return <h2>Hello, {props.name}. You are {props.age} years old.</h2>;
+}
 
 ### Basic Example:
 
@@ -59,6 +69,31 @@ function Child(props) {
 ```
 
 ➡️ Output: **Hello, React Student!**
+
+**🔹 Complete Example
+**
+// Parent Component
+function Parent() {
+  return (
+    <div>
+      <h1>Props Example</h1>
+      {/* Passing props to child */}
+      <Child name="Alice" age={20} />
+      <Child name="Bob" age={22} />
+    </div>
+  );
+}
+
+// Child Component
+function Child(props) {
+  return (
+    <p>
+      Hello, {props.name}! You are {props.age} years old.
+    </p>
+  );
+}
+
+export default Parent;
 
 ### Complete Example (Props with multiple children):
 
@@ -154,6 +189,61 @@ function TailwindExample() {
 ## 3. Events in React
 
 Events are handled using camelCase (e.g., `onClick`).
+# React Fundamentals 📘
+
+This document covers the basics of **React** concepts including **Event Handling, State, Stateless vs Stateful Components, and Component Lifecycle** with examples.
+
+---
+
+## 🔹 1. Event Handling in React
+
+In React, events are written in **camelCase** and event handlers are passed as functions.
+
+### ✅ Example: Button Click Event
+```jsx
+function ClickExample() {
+  function handleClick() {
+    alert("Button was clicked!");
+  }
+
+  return (
+    <button onClick={handleClick}>Click Me</button>
+  );
+}
+
+export default ClickExample;
+**Example: Passing Parameters
+**
+function GreetUser() {
+  function greet(name) {
+    alert("Hello, " + name);
+  }
+
+  return (
+    <button onClick={() => greet("Alice")}>Greet</button>
+  );
+}
+**2. Creating State
+
+State allows a component to store and manage data that changes over time.
+**
+
+import { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0); // Initial state = 0
+
+  return (
+    <div>
+      <h2>Count: {count}</h2>
+      <button onClick={() => setCount(count + 1)}>Increase</button>
+      <button onClick={() => setCount(0)}>Reset</button>
+    </div>
+  );
+}
+
+export default Counter;
+
 
 ### Basic Example:
 
@@ -234,7 +324,14 @@ function Profile() {
 
 * **Stateless:** Only uses props, no state.
 * **Stateful:** Manages its own state.
+3. Stateless vs Stateful Components
+(a) Stateless Component
 
+Uses props only.
+
+No internal state.
+
+Reusable and predictable.
 ### Example:
 
 ```jsx
@@ -271,6 +368,75 @@ function MessageContainer() {
 ## 6. Component Lifecycle
 
 React lifecycle has **Mounting, Updating, and Unmounting** phases.
+4. Component Lifecycle
+
+React components go through three main lifecycle phases:
+
+Mounting → When the component is created and added to the DOM.
+
+Updating → When state or props change, causing a re-render.
+
+Unmounting → When the component is removed from the DOM.
+
+**✅ Class Component Example
+**
+import React from "react";
+
+class Example extends React.Component {
+  componentDidMount() {
+    console.log("Component Mounted!");
+  }
+
+  componentDidUpdate() {
+    console.log("Component Updated!");
+  }
+
+  componentWillUnmount() {
+    console.log("Component Unmounted!");
+  }
+
+  render() {
+    return <h2>Hello, React Lifecycle!</h2>;
+  }
+}
+
+export default Example;
+
+
+**✅ Functional Component Example (using useEffect)
+**In modern React, lifecycle methods are handled with hooks.
+
+import { useState, useEffect } from "react";
+
+function Timer() {
+  const [count, setCount] = useState(0);
+
+  // Runs after render
+  useEffect(() => {
+    console.log("Component Mounted/Updated");
+
+    return () => {
+      console.log("Component Unmounted"); // cleanup
+    };
+  }, [count]); // runs whenever count changes
+
+  return (
+    <div>
+      <h2>Timer: {count}</h2>
+      <button onClick={() => setCount(count + 1)}>Increase</button>
+    </div>
+  );
+}
+
+export default Timer;
+
+
+📊 Lifecycle Summary
+Phase	Class Component Method(s)	Functional Hook Equivalent
+Mounting	componentDidMount()	useEffect(() => {...}, [])
+Updating	componentDidUpdate()	useEffect(() => {...}, [deps])
+Unmounting	componentWillUnmount()	return () => {...} inside useEffect
+
 
 ### Diagram (Simplified):
 
