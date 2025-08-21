@@ -1,4 +1,4 @@
-# React Unit III Documentation
+# React
 
 This documentation covers **Props, Styling, Events, State, Lifecycle, and Hooks** in React with theory and examples. All examples are kept simple and well-commented for easy understanding.
 
